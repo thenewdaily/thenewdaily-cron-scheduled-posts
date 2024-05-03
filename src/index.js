@@ -14,13 +14,17 @@
 
 export default {
 	async scheduled(event, env, ctx) {
-		const timestamp = +new Date();
-		const url = `${env.WORDPRESSS_DOMAIN}/wp-json/tnd/v1/scheduled-posts?t=${timestamp}`;
-		const res = await fetch(url, {
-			method: 'GET',
-		});
-		const data = await res.json();
-		data.timestampVercel = timestamp;
-		console.log(data);
+		if (env.WORDPRESSS_DOMAIN) {
+			const timestamp = +new Date();
+			const url = `${env.WORDPRESSS_DOMAIN}/wp-json/tnd/v1/scheduled-posts?t=${timestamp}`;
+			const res = await fetch(url, {
+				method: 'GET',
+			});
+			const data = await res.json();
+			data.timestampVercel = timestamp;
+			console.log(data);
+		} else {
+			console.log('⚠️ WORDPRESSS_DOMAIN not defined');
+		}
 	},
 };
